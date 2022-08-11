@@ -2,6 +2,7 @@ package com.althaafridha.translationapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.althaafridha.translationapp.databinding.ActivityMainBinding
@@ -24,8 +25,14 @@ class MainActivity : AppCompatActivity() {
 		viewModel = ViewModelProvider(this)[TranslationViewModel::class.java]
 
 		viewModel.getSearchTranslate().observe(this){
-			binding.tvWord.text = it[0].word
-			binding.tvPhonetic.text = it[0].phonetic
+			if(it != null){
+				binding.tvWord.text = it[0].word
+				binding.tvPhonetic.text = it[0].phonetic
+				binding.tvDefinition.text = it[0].meanings?.get(0)?.definitions?.get(0)?.definition
+			} else {
+				Toast.makeText(applicationContext, "No Found Word", Toast.LENGTH_SHORT).show()
+			}
+
 		}
 
 		getSearchTranslate()
